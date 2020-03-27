@@ -22,14 +22,16 @@
  */
 
 #include "device_tree_parser.h"
+#include "node.h"
 
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <vector>
 
 DeviceTreeParser::DeviceTreeParser(const std::string &argFilePath)
     : deviceTreeFilePath{argFilePath} {}
+
+DeviceTreeParser::~DeviceTreeParser() {}
 
 bool DeviceTreeParser::ParseFile() {
   // Open the file and determine its size
@@ -76,6 +78,17 @@ bool DeviceTreeParser::ParseFile() {
   // Iterate over all the lines of the file
   std::string line;
   while (std::getline(inputStream, line)) {
+    if (line.empty()) {
+      continue;
+    }
+    if (line == "/dts-v1/;") {
+      continue;
+    }
+    if (Node::IsNodeStartLine(line)) {
+      rootNode = std::make_unique<Node>(inputStream);
+      continue;
+    }
+    std::cout << line << "\n";
   }
 
   return true;

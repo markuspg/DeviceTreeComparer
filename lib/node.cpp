@@ -21,24 +21,16 @@
  * SOFTWARE.
  */
 
-#ifndef DEVICE_TREE_PARSER_H
-#define DEVICE_TREE_PARSER_H
+#include "node.h"
 
-#include <memory>
-#include <string>
+#include <iostream>
 
-class Node;
+Node::Node(std::istringstream &argInStream) {
+  std::string line;
+  while (std::getline(argInStream, line)) {
+  }
+}
 
-class DeviceTreeParser {
-public:
-  DeviceTreeParser(const std::string &argFilePath);
-  ~DeviceTreeParser();
-
-  bool ParseFile();
-  
-private:
-  const std::string deviceTreeFilePath;
-  std::unique_ptr<Node> rootNode;
-};
-
-#endif // DEVICE_TREE_PARSER_H
+bool Node::IsNodeStartLine(const std::string &argLine) {
+  return argLine.find('{') != std::string::npos;
+}
