@@ -21,22 +21,17 @@
  * SOFTWARE.
  */
 
-#include "device_tree_parser.h"
+#ifndef DEVICE_TREE_PARSER_H
+#define DEVICE_TREE_PARSER_H
 
-#include <iostream>
+#include <string>
 
-int main(int argc, char *argv[]) {
-  if (argc != 3) {
-    std::cerr << "Exactly two arguments are required - the two files to be "
-                 "compared\n";
-    return 1;
-  }
+class DeviceTreeParser {
+public:
+  DeviceTreeParser(const std::string &argFilePath);
 
-  const std::string file1{argv[1]};
-  const std::string file2{argv[2]};
+private:
+  const std::string deviceTreeFilePath;
+};
 
-  DeviceTreeParser parserFile1{file1};
-  DeviceTreeParser parserFile2{file2};
-
-  return 0;
-}
+#endif // DEVICE_TREE_PARSER_H
