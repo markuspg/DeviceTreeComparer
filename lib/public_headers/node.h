@@ -25,12 +25,17 @@
 #define NODE_H
 
 #include <sstream>
+#include <vector>
 
 class Node {
 public:
-  Node(std::istringstream &argInStream);
+  Node(const std::string &argLine, std::istringstream &argInStream);
 
   static bool IsNodeStartLine(const std::string &argLine);
+  
+private:
+  const std::string nodeName;
+  std::vector<Node> subNodes;
 };
 
 #endif // NODE_H

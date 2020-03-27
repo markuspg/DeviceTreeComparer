@@ -85,7 +85,7 @@ bool DeviceTreeParser::ParseFile() {
       continue;
     }
     if (Node::IsNodeStartLine(line)) {
-      rootNode = std::make_unique<Node>(inputStream);
+      rootNode = std::make_unique<Node>(line, inputStream);
       continue;
     }
     std::cout << line << "\n";

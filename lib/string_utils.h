@@ -26,6 +26,7 @@
 
 #include <string>
 
+std::string ExtractNodeName(const std::string &argInputStr);
 std::string RemoveLeadingWhitespace(const std::string &argInputStr);
 
 #endif // STRING_UTILS_H

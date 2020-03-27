@@ -22,12 +22,17 @@
  */
 
 #include "node.h"
+#include "string_utils.h"
 
 #include <iostream>
 
-Node::Node(std::istringstream &argInStream) {
+Node::Node(const std::string &argLine, std::istringstream &argInStream)
+    : nodeName{ExtractNodeName(argLine)} {
   std::string line;
   while (std::getline(argInStream, line)) {
+    if (Node::IsNodeStartLine(line)) {
+      subNodes.emplace_back(line, argInStream);
+    }
   }
 }
 
