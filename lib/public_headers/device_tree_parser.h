@@ -30,6 +30,8 @@ class DeviceTreeParser {
 public:
   DeviceTreeParser(const std::string &argFilePath);
 
+  bool ParseFile();
+  
 private:
   const std::string deviceTreeFilePath;
 };
