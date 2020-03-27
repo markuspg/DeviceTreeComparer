@@ -30,7 +30,8 @@
 class Node {
 public:
   Node(const std::string &argLine, std::istringstream &argInStream);
-
+  
+  static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
   
 private:

@@ -33,7 +33,14 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream)
     if (Node::IsNodeStartLine(line)) {
       subNodes.emplace_back(line, argInStream);
     }
+    if (Node::IsNodeEndLine(line)) {
+      break;
+    }
   }
+}
+
+bool Node::IsNodeEndLine(const std::string &argLine) {
+  return argLine.find("};") != std::string::npos;
 }
 
 bool Node::IsNodeStartLine(const std::string &argLine) {
