@@ -4,6 +4,7 @@ project(LibDeviceTreeComparer)
 
 add_library(${PROJECT_NAME}
     device_tree_parser.cpp
-    node.cpp)
+    node.cpp
+    string_utils.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     public_headers)
