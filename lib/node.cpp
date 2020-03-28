@@ -26,12 +26,16 @@
 
 #include <iostream>
 
-Node::Node(const std::string &argLine, std::istringstream &argInStream)
-    : nodeName{ExtractNodeName(argLine)} {
+Node::Node(const std::string &argLine, std::istringstream &argInStream,
+           const Node *argParentNode)
+    : level{argParentNode
+                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
+                : static_cast<uint_fast16_t>(0u)},
+      nodeName{ExtractNodeName(argLine)} {
   std::string line;
   while (std::getline(argInStream, line)) {
     if (Node::IsNodeStartLine(line)) {
-      subNodes.emplace_back(line, argInStream);
+      subNodes.emplace_back(line, argInStream, this);
     }
     if (Node::IsNodeEndLine(line)) {
       break;

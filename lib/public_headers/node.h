@@ -29,12 +29,14 @@
 
 class Node {
 public:
-  Node(const std::string &argLine, std::istringstream &argInStream);
+  Node(const std::string &argLine, std::istringstream &argInStream, const Node * argParentNode = nullptr);
   
+  uint_fast16_t GetLevel() const noexcept { return level; }
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
   
 private:
+  const uint_fast16_t level = 0;
   const std::string nodeName;
   std::vector<Node> subNodes;
 };
