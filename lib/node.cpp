@@ -50,7 +50,13 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
 }
 
 std::string Node::GetStringRep() const {
-  return GetPrependedTabs() + name + " {";
+  std::string resultStr;
+  resultStr.append(GetPrependedTabs() + name + " {\n");
+  for (const auto &item : items) {
+    resultStr.append(item->GetStringRep() + "\n");
+  }
+  resultStr.append(GetPrependedTabs() + "};");
+  return resultStr;
 }
 
 bool Node::IsNodeEndLine(const std::string &argLine) {
@@ -89,8 +95,9 @@ void CompareNodes(const Node &argNodeA, const Node &argNodeB) {
       }
     }
     if (false == found) {
-      std::cout << "FAILED TO FIND IN A: " << item->GetName()
-                << "---------------\n";
+      std::cout << "FAILED TO FIND IN A:\n";
+      item->Print();
+      std::cout << "---------------\n";
     }
   }
 }
