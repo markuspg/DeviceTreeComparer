@@ -28,6 +28,8 @@ public:
   static std::shared_ptr<Property> Construct(const std::string &argLine);
   virtual ~Property();
 
+  const std::string &GetName() const noexcept { return name; }
+
 protected:
   Property(const std::string &argName) : name{argName} {}
   const std::string name;
@@ -41,6 +43,9 @@ private:
 };
 
 class PropertyValueString : public Property {
+public:
+  const std::string &GetValue() const noexcept { return value; }
+
 private:
   PropertyValueString(const std::string &argName, const std::string &argValue)
       : Property{argName}, value{argValue} {}
