@@ -21,32 +21,7 @@
  * SOFTWARE.
  */
 
-#ifndef NODE_H
-#define NODE_H
+#include "root_node.h"
 
-#include "item.h"
-
-#include <memory>
-#include <sstream>
-#include <vector>
-
-class Node;
-class Property;
-
-void CompareNodes(const Node &argNodeA, const Node &argNodeB);
-
-class Node : public Item {
-public:
-  Node(const std::string &argLine, std::istringstream &argInStream,
-       const Node *argParentNode);
-
-  static bool IsNodeEndLine(const std::string &argLine);
-  static bool IsNodeStartLine(const std::string &argLine);
-
-private:
-  std::vector<std::shared_ptr<Item>> items;
-
-  friend void CompareNodes(const Node &, const Node &);
-};
-
-#endif // NODE_H
+RootNode::RootNode(const std::string &argLine, std::istringstream &argInStream)
+    : Node{argLine, argInStream, nullptr} {}

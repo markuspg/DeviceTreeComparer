@@ -24,7 +24,7 @@
 #ifndef DEVICE_TREE_PARSER_H
 #define DEVICE_TREE_PARSER_H
 
-#include "node.h"
+#include "root_node.h"
 
 #include <string>
 
@@ -33,12 +33,12 @@ public:
   DeviceTreeParser(const std::string &argFilePath);
   ~DeviceTreeParser();
 
-  const std::unique_ptr<Node> &GetRootNode() const noexcept { return rootNode; }
+  const std::unique_ptr<RootNode> &GetRootNode() const noexcept { return rootNode; }
   bool ParseFile();
 
 private:
   const std::string deviceTreeFilePath;
-  std::unique_ptr<Node> rootNode;
+  std::unique_ptr<RootNode> rootNode;
 };
 
 #endif // DEVICE_TREE_PARSER_H

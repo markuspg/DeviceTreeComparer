@@ -22,7 +22,7 @@
  */
 
 #include "device_tree_parser.h"
-#include "node.h"
+#include "root_node.h"
 
 #include <fstream>
 #include <iostream>
@@ -85,7 +85,7 @@ bool DeviceTreeParser::ParseFile() {
       continue;
     }
     if (Node::IsNodeStartLine(line)) {
-      rootNode = std::make_unique<Node>(line, inputStream);
+      rootNode = std::make_unique<RootNode>(line, inputStream);
       continue;
     }
     std::cout << line << "\n";

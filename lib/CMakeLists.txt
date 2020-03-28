@@ -7,6 +7,7 @@ add_library(${PROJECT_NAME}
     item.cpp
     node.cpp
     property.cpp
+    root_node.cpp
     string_utils.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     public_headers)
