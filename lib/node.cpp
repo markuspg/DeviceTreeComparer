@@ -29,10 +29,10 @@
 
 Node::Node(const std::string &argLine, std::istringstream &argInStream,
            const Node *argParentNode)
-    : Item{ExtractNodeName(argLine)},
-      level{argParentNode
-                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
-                : static_cast<uint_fast16_t>(0u)} {
+    : Item{argParentNode
+               ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
+               : static_cast<uint_fast16_t>(0u),
+           ExtractNodeName(argLine)} {
   std::string line;
   while (std::getline(argInStream, line)) {
     if (RemoveLeadingWhitespace(line).empty()) {
@@ -45,7 +45,7 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
     if (Node::IsNodeEndLine(line)) {
       break;
     }
-    items.emplace_back(Property::Construct(line));
+    items.emplace_back(Property::Construct(line, this));
   }
 }
 

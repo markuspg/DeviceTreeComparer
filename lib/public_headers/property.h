@@ -22,23 +22,27 @@
  */
 
 #include "item.h"
+#include "node.h"
 
 #include <memory>
 
 class Property : public Item {
 public:
-  static std::shared_ptr<Property> Construct(const std::string &argLine);
+  static std::shared_ptr<Property> Construct(const std::string &argLine,
+                                             const Node *argParentNode);
   virtual ~Property();
 
   const std::string &GetName() const noexcept { return name; }
 
 protected:
-  Property(const std::string &argName) : Item{argName} {}
+  Property(const std::string &argName, const Node *argParentNode)
+      : Item{argParentNode->GetLevel() + 1, argName} {}
 };
 
 class PropertyValueLess : public Property {
 private:
-  PropertyValueLess(const std::string &argName) : Property(argName) {}
+  PropertyValueLess(const std::string &argName, const Node *argParentNode)
+      : Property(argName, argParentNode) {}
 
   friend Property;
 };
@@ -48,8 +52,9 @@ public:
   const std::string &GetValue() const noexcept { return value; }
 
 private:
-  PropertyValueString(const std::string &argName, const std::string &argValue)
-      : Property{argName}, value{argValue} {}
+  PropertyValueString(const std::string &argName, const Node *argParentNode,
+                      const std::string &argValue)
+      : Property{argName, argParentNode}, value{argValue} {}
 
   const std::string value;
 

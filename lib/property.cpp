@@ -22,20 +22,23 @@
  */
 
 #include "property.h"
+#include "node.h"
 #include "string_utils.h"
 
 Property::~Property() {}
 
-std::shared_ptr<Property> Property::Construct(const std::string &argLine) {
+std::shared_ptr<Property> Property::Construct(const std::string &argLine,
+                                              const Node *argParentNode) {
   const auto propertyText{
       RemoveTrailingSemicolon(RemoveLeadingWhitespace(argLine))};
 
   const auto dividerPos = propertyText.find(" = ");
   if (dividerPos == std::string::npos) {
-    return std::shared_ptr<Property>(new PropertyValueLess{propertyText});
+    return std::shared_ptr<Property>(
+        new PropertyValueLess{propertyText, argParentNode});
   }
 
   return std::shared_ptr<Property>(new PropertyValueString{
-      propertyText.substr(0, dividerPos),
+      propertyText.substr(0, dividerPos), argParentNode,
       propertyText.substr(dividerPos + 3, std::string::npos)});
 }

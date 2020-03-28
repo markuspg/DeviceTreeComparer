@@ -30,11 +30,14 @@ class Item {
 public:
   virtual ~Item();
 
+  uint_fast16_t GetLevel() const noexcept { return level; }
   const std::string &GetName() const noexcept { return name; }
 
 protected:
-  Item(const std::string &argName) : name{argName} {}
+  Item(uint_fast16_t argLevel, const std::string &argName)
+      : level{argLevel}, name{argName} {}
 
+  const uint_fast16_t level = 0;
   const std::string name;
 };
 
