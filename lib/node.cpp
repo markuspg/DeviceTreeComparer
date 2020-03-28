@@ -49,10 +49,18 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
   }
 }
 
-void Node::CompareSubItems(const Node &argOtherNode) {
+bool Node::IsNodeEndLine(const std::string &argLine) {
+  return argLine.find("};") != std::string::npos;
+}
+
+bool Node::IsNodeStartLine(const std::string &argLine) {
+  return argLine.find('{') != std::string::npos;
+}
+
+void CompareNodes(const Node &argNodeA, const Node &argNodeB) {
   bool found = false;
-  for (const auto &item : items) {
-    for (const auto &otherItem : argOtherNode.items) {
+  for (const auto &item : argNodeA.items) {
+    for (const auto &otherItem : argNodeB.items) {
       if (item->GetName() == otherItem->GetName()) {
         found = true;
         std::cout << item->GetName() << " == " << otherItem->GetName() << "\n";
@@ -63,12 +71,4 @@ void Node::CompareSubItems(const Node &argOtherNode) {
       std::cout << "FAILED TO FIND " << item->GetName() << "---------------\n";
     }
   }
-}
-
-bool Node::IsNodeEndLine(const std::string &argLine) {
-  return argLine.find("};") != std::string::npos;
-}
-
-bool Node::IsNodeStartLine(const std::string &argLine) {
-  return argLine.find('{') != std::string::npos;
 }

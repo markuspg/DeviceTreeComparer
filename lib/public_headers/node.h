@@ -30,20 +30,25 @@
 #include <sstream>
 #include <vector>
 
+class Node;
 class Property;
+
+void CompareNodes(const Node &argNodeA, const Node &argNodeB);
 
 class Node : public Item {
 public:
-  Node(const std::string &argLine, std::istringstream &argInStream, const Node * argParentNode = nullptr);
-  
-  void CompareSubItems(const Node &argOtherNode);
+  Node(const std::string &argLine, std::istringstream &argInStream,
+       const Node *argParentNode = nullptr);
+
   uint_fast16_t GetLevel() const noexcept { return level; }
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
-  
+
 private:
   std::vector<std::shared_ptr<Item>> items;
   const uint_fast16_t level = 0;
+
+  friend void CompareNodes(const Node &, const Node &);
 };
 
 #endif // NODE_H
