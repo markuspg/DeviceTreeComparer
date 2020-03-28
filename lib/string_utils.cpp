@@ -47,3 +47,12 @@ std::string RemoveLeadingWhitespace(const std::string &argInputStr) {
   }
   return argInputStr.substr(dataStartIdx);
 }
+
+std::string RemoveTrailingSemicolon(const std::string &argInputStr) {
+  const auto semicolonPos = argInputStr.find(';');
+  if ((semicolonPos == std::string::npos) ||
+      (semicolonPos != argInputStr.size() - 1)) {
+    throw std::invalid_argument{"Property string does not end on semicolon"};
+  }
+  return argInputStr.substr(0, semicolonPos);
+}

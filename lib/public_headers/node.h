@@ -24,8 +24,11 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <memory>
 #include <sstream>
 #include <vector>
+
+class Property;
 
 class Node {
 public:
@@ -38,6 +41,7 @@ public:
 private:
   const uint_fast16_t level = 0;
   const std::string nodeName;
+  std::vector<std::shared_ptr<Property>> properties;
   std::vector<Node> subNodes;
 };
 

@@ -21,36 +21,31 @@
  * SOFTWARE.
  */
 
-#include "node.h"
-#include "property.h"
-#include "string_utils.h"
+#include <memory>
 
-Node::Node(const std::string &argLine, std::istringstream &argInStream,
-           const Node *argParentNode)
-    : level{argParentNode
-                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
-                : static_cast<uint_fast16_t>(0u)},
-      nodeName{ExtractNodeName(argLine)} {
-  std::string line;
-  while (std::getline(argInStream, line)) {
-    if (RemoveLeadingWhitespace(line).empty()) {
-      continue;
-    }
-    if (Node::IsNodeStartLine(line)) {
-      subNodes.emplace_back(line, argInStream, this);
-      continue;
-    }
-    if (Node::IsNodeEndLine(line)) {
-      break;
-    }
-    properties.emplace_back(Property::Construct(line));
-  }
-}
+class Property {
+public:
+  static std::shared_ptr<Property> Construct(const std::string &argLine);
+  virtual ~Property();
 
-bool Node::IsNodeEndLine(const std::string &argLine) {
-  return argLine.find("};") != std::string::npos;
-}
+protected:
+  Property(const std::string &argName) : name{argName} {}
+  const std::string name;
+};
 
-bool Node::IsNodeStartLine(const std::string &argLine) {
-  return argLine.find('{') != std::string::npos;
-}
+class PropertyValueLess : public Property {
+private:
+  PropertyValueLess(const std::string &argName) : Property(argName) {}
+
+  friend Property;
+};
+
+class PropertyValueString : public Property {
+private:
+  PropertyValueString(const std::string &argName, const std::string &argValue)
+      : Property{argName}, value{argValue} {}
+
+  const std::string value;
+
+  friend Property;
+};

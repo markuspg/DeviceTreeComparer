@@ -21,36 +21,21 @@
  * SOFTWARE.
  */
 
-#include "node.h"
 #include "property.h"
 #include "string_utils.h"
 
-Node::Node(const std::string &argLine, std::istringstream &argInStream,
-           const Node *argParentNode)
-    : level{argParentNode
-                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
-                : static_cast<uint_fast16_t>(0u)},
-      nodeName{ExtractNodeName(argLine)} {
-  std::string line;
-  while (std::getline(argInStream, line)) {
-    if (RemoveLeadingWhitespace(line).empty()) {
-      continue;
-    }
-    if (Node::IsNodeStartLine(line)) {
-      subNodes.emplace_back(line, argInStream, this);
-      continue;
-    }
-    if (Node::IsNodeEndLine(line)) {
-      break;
-    }
-    properties.emplace_back(Property::Construct(line));
+Property::~Property() {}
+
+std::shared_ptr<Property> Property::Construct(const std::string &argLine) {
+  const auto propertyText{
+      RemoveTrailingSemicolon(RemoveLeadingWhitespace(argLine))};
+
+  const auto dividerPos = propertyText.find(" = ");
+  if (dividerPos == std::string::npos) {
+    return std::shared_ptr<Property>(new PropertyValueLess{propertyText});
   }
-}
 
-bool Node::IsNodeEndLine(const std::string &argLine) {
-  return argLine.find("};") != std::string::npos;
-}
-
-bool Node::IsNodeStartLine(const std::string &argLine) {
-  return argLine.find('{') != std::string::npos;
+  return std::shared_ptr<Property>(new PropertyValueString{
+      propertyText.substr(0, dividerPos),
+      propertyText.substr(dividerPos + 3, std::string::npos)});
 }
