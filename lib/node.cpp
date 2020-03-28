@@ -63,16 +63,34 @@ bool Node::IsNodeStartLine(const std::string &argLine) {
 
 void CompareNodes(const Node &argNodeA, const Node &argNodeB) {
   bool found = false;
+
+  // Find items in node A which are missing in node B
   for (const auto &item : argNodeA.items) {
+    found = false;
     for (const auto &otherItem : argNodeB.items) {
       if (item->GetName() == otherItem->GetName()) {
         found = true;
-        std::cout << item->GetName() << " == " << otherItem->GetName() << "\n";
         break;
       }
     }
     if (false == found) {
-      std::cout << "FAILED TO FIND " << item->GetName() << "---------------\n";
+      std::cout << "FAILED TO FIND IN B: " << item->GetName()
+                << "---------------\n";
+    }
+  }
+
+  // Find items in node B which are missing in node A
+  for (const auto &item : argNodeB.items) {
+    found = false;
+    for (const auto &otherItem : argNodeA.items) {
+      if (item->GetName() == otherItem->GetName()) {
+        found = true;
+        break;
+      }
+    }
+    if (false == found) {
+      std::cout << "FAILED TO FIND IN A: " << item->GetName()
+                << "---------------\n";
     }
   }
 }
