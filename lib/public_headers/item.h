@@ -24,9 +24,16 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <string>
+
 class Item {
 public:
-    virtual ~Item();
+  virtual ~Item();
+
+protected:
+  Item(const std::string &argName) : name{argName} {}
+
+  const std::string name;
 };
 
 #endif // ITEM_H

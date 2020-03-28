@@ -43,7 +43,6 @@ public:
 private:
   std::vector<std::shared_ptr<Item>> items;
   const uint_fast16_t level = 0;
-  const std::string nodeName;
 };
 
 #endif // NODE_H

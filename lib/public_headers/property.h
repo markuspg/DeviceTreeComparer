@@ -33,8 +33,7 @@ public:
   const std::string &GetName() const noexcept { return name; }
 
 protected:
-  Property(const std::string &argName) : name{argName} {}
-  const std::string name;
+  Property(const std::string &argName) : Item{argName} {}
 };
 
 class PropertyValueLess : public Property {
