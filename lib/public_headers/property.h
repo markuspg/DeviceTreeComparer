@@ -21,9 +21,11 @@
  * SOFTWARE.
  */
 
+#include "item.h"
+
 #include <memory>
 
-class Property {
+class Property : public Item {
 public:
   static std::shared_ptr<Property> Construct(const std::string &argLine);
   virtual ~Property();

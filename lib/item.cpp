@@ -21,36 +21,6 @@
  * SOFTWARE.
  */
 
-#include "node.h"
-#include "property.h"
-#include "string_utils.h"
+#include "item.h"
 
-Node::Node(const std::string &argLine, std::istringstream &argInStream,
-           const Node *argParentNode)
-    : level{argParentNode
-                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
-                : static_cast<uint_fast16_t>(0u)},
-      nodeName{ExtractNodeName(argLine)} {
-  std::string line;
-  while (std::getline(argInStream, line)) {
-    if (RemoveLeadingWhitespace(line).empty()) {
-      continue;
-    }
-    if (Node::IsNodeStartLine(line)) {
-      items.emplace_back(new Node{line, argInStream, this});
-      continue;
-    }
-    if (Node::IsNodeEndLine(line)) {
-      break;
-    }
-    items.emplace_back(Property::Construct(line));
-  }
-}
-
-bool Node::IsNodeEndLine(const std::string &argLine) {
-  return argLine.find("};") != std::string::npos;
-}
-
-bool Node::IsNodeStartLine(const std::string &argLine) {
-  return argLine.find('{') != std::string::npos;
-}
+Item::~Item() {}

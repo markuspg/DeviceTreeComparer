@@ -24,13 +24,15 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "item.h"
+
 #include <memory>
 #include <sstream>
 #include <vector>
 
 class Property;
 
-class Node {
+class Node : public Item {
 public:
   Node(const std::string &argLine, std::istringstream &argInStream, const Node * argParentNode = nullptr);
   
@@ -39,10 +41,9 @@ public:
   static bool IsNodeStartLine(const std::string &argLine);
   
 private:
+  std::vector<std::shared_ptr<Item>> items;
   const uint_fast16_t level = 0;
   const std::string nodeName;
-  std::vector<std::shared_ptr<Property>> properties;
-  std::vector<Node> subNodes;
 };
 
 #endif // NODE_H
