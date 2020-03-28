@@ -44,6 +44,8 @@ public:
   static bool IsNodeStartLine(const std::string &argLine);
 
 private:
+  std::string GetStringRep() const override;
+
   std::vector<std::shared_ptr<Item>> items;
 
   friend void CompareNodes(const Node &, const Node &);

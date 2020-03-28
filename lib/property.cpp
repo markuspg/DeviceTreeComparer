@@ -42,3 +42,13 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
       propertyText.substr(0, dividerPos), argParentNode,
       propertyText.substr(dividerPos + 3, std::string::npos)});
 }
+
+std::string Property::GetStringRep() const { return GetPrependedTabs() + name; }
+
+std::string PropertyValueLess::GetStringRep() const {
+  return Property::GetStringRep() + ";";
+}
+
+std::string PropertyValueString::GetStringRep() const {
+  return Property::GetStringRep() + " = " + value + ";";
+}

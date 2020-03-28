@@ -49,6 +49,10 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
   }
 }
 
+std::string Node::GetStringRep() const {
+  return GetPrependedTabs() + name + " {";
+}
+
 bool Node::IsNodeEndLine(const std::string &argLine) {
   return argLine.find("};") != std::string::npos;
 }

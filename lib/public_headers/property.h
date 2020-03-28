@@ -37,9 +37,14 @@ public:
 protected:
   Property(const std::string &argName, const Node *argParentNode)
       : Item{argParentNode->GetLevel() + 1, argName} {}
+
+  std::string GetStringRep() const override;
 };
 
 class PropertyValueLess : public Property {
+protected:
+  std::string GetStringRep() const override;
+
 private:
   PropertyValueLess(const std::string &argName, const Node *argParentNode)
       : Property(argName, argParentNode) {}
@@ -50,6 +55,9 @@ private:
 class PropertyValueString : public Property {
 public:
   const std::string &GetValue() const noexcept { return value; }
+
+protected:
+  std::string GetStringRep() const override;
 
 private:
   PropertyValueString(const std::string &argName, const Node *argParentNode,

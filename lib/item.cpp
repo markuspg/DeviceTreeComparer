@@ -23,4 +23,10 @@
 
 #include "item.h"
 
+#include <iostream>
+
 Item::~Item() {}
+
+void Item::Print() const { std::cout << GetStringRep() << "\n"; }
+
+std::string Item::GetPrependedTabs() const { return std::string(level, '\t'); }
