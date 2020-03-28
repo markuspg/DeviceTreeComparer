@@ -30,6 +30,8 @@ class Item {
 public:
   virtual ~Item();
 
+  const std::string &GetName() const noexcept { return name; }
+
 protected:
   Item(const std::string &argName) : name{argName} {}
 

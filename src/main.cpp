@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
     std::cerr << "Failed to parse file: " << file2 << "\n";
     return 3;
   }
+  parserFile1.GetRootNode()->CompareSubItems(*parserFile2.GetRootNode().get());
 
   return 0;
 }

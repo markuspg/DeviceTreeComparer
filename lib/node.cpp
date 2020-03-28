@@ -25,6 +25,8 @@
 #include "property.h"
 #include "string_utils.h"
 
+#include <iostream>
+
 Node::Node(const std::string &argLine, std::istringstream &argInStream,
            const Node *argParentNode)
     : Item{ExtractNodeName(argLine)},
@@ -44,6 +46,22 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
       break;
     }
     items.emplace_back(Property::Construct(line));
+  }
+}
+
+void Node::CompareSubItems(const Node &argOtherNode) {
+  bool found = false;
+  for (const auto &item : items) {
+    for (const auto &otherItem : argOtherNode.items) {
+      if (item->GetName() == otherItem->GetName()) {
+        found = true;
+        std::cout << item->GetName() << " == " << otherItem->GetName() << "\n";
+        break;
+      }
+    }
+    if (false == found) {
+      std::cout << "FAILED TO FIND " << item->GetName() << "---------------\n";
+    }
   }
 }
 

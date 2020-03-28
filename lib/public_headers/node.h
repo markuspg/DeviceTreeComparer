@@ -36,6 +36,7 @@ class Node : public Item {
 public:
   Node(const std::string &argLine, std::istringstream &argInStream, const Node * argParentNode = nullptr);
   
+  void CompareSubItems(const Node &argOtherNode);
   uint_fast16_t GetLevel() const noexcept { return level; }
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
