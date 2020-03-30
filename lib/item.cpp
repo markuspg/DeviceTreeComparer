@@ -32,7 +32,11 @@ bool Item::Compare(const Item *argOtherItem) {
     return false;
   }
 
-  if (dynamic_cast<const Item *>(argOtherItem) != nullptr) {
+  if (dynamic_cast<const Item *>(argOtherItem) == nullptr) {
+    return false;
+  }
+
+  if ((level == argOtherItem->level) && (name == argOtherItem->name)) {
     return true;
   }
 
