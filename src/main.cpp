@@ -33,10 +33,17 @@ int main(int argc, char *argv[]) {
     return 2;
   }
 
+  bool compare = true;
   bool displayHelp = false;
+  bool merge_file_2_into_file_1 = false;
   for (auto i = 1; i < argc; ++i) {
     if (std::string{argv[i]} == "-h") {
       displayHelp = true;
+      break;
+    }
+    if (std::string{argv[i]} == "-m") {
+      compare = false;
+      merge_file_2_into_file_1 = true;
     }
   }
 
@@ -46,7 +53,10 @@ int main(int argc, char *argv[]) {
                  "source files and\nreturns '0' if they are equal or '1' if "
                  "they differ.\n\n"
               << "Options:\n"
-              << "\t-h: Display this help text\n";
+              << "\t-h: Display this help text\n"
+              << "\t-m: Overwrite options of FILE_1 found both in FILE_1 and "
+                 "FILE_2 with\n\t    FILE_2's values and print the result to "
+                 "stdout\n";
     return 0;
   }
 
@@ -72,5 +82,16 @@ int main(int argc, char *argv[]) {
     return 5;
   }
 
-  return 0;
+  if (compare) {
+    if (rootNode1->Compare(rootNode2.get()) == true) {
+      return 0;
+    }
+    return 1;
+  } else if (merge_file_2_into_file_1) {
+    rootNode1->Merge(rootNode2.get());
+    rootNode1->Print();
+    return 0;
+  }
+
+  return 6;
 }
