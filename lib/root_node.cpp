@@ -27,5 +27,9 @@ RootNode::RootNode(const std::string &argLine, std::istringstream &argInStream)
     : Node{argLine, argInStream, nullptr} {}
 
 bool RootNode::Compare(const Item *argOtherItem) {
+  if (dynamic_cast<const RootNode *>(argOtherItem) == nullptr) {
+    return false;
+  }
+
   return Node::Compare(argOtherItem);
 }

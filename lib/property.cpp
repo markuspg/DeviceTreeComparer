@@ -28,7 +28,16 @@
 Property::~Property() {}
 
 bool Property::Compare(const Item *argOtherItem) {
-  return Item::Compare(argOtherItem);
+  if (false == Item::Compare(argOtherItem)) {
+    return false;
+  }
+
+  const auto otherProperty = dynamic_cast<const Property *>(argOtherItem);
+  if (nullptr != otherProperty) {
+    return true;
+  }
+
+  return false;
 }
 
 std::shared_ptr<Property> Property::Construct(const std::string &argLine,
@@ -50,7 +59,17 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
 std::string Property::GetStringRep() const { return GetPrependedTabs() + name; }
 
 bool PropertyValueLess::Compare(const Item *argOtherItem) {
-  return Property::Compare(argOtherItem);
+  if (false == Property::Compare(argOtherItem)) {
+    return false;
+  }
+
+  const auto otherProperty =
+      dynamic_cast<const PropertyValueLess *>(argOtherItem);
+  if (nullptr != otherProperty) {
+    return true;
+  }
+
+  return false;
 }
 
 std::string PropertyValueLess::GetStringRep() const {
@@ -58,7 +77,21 @@ std::string PropertyValueLess::GetStringRep() const {
 }
 
 bool PropertyValueString::Compare(const Item *argOtherItem) {
-  return Property::Compare(argOtherItem);
+  if (false == Property::Compare(argOtherItem)) {
+    return false;
+  }
+
+  const auto otherProperty =
+      dynamic_cast<const PropertyValueString *>(argOtherItem);
+  if (nullptr == otherProperty) {
+    return false;
+  }
+
+  if (value == otherProperty->value) {
+    return true;
+  }
+
+  return false;
 }
 
 std::string PropertyValueString::GetStringRep() const {

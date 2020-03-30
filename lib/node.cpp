@@ -25,6 +25,7 @@
 #include "property.h"
 #include "string_utils.h"
 
+#include <algorithm>
 #include <iostream>
 
 Node::Node(const std::string &argLine, std::istringstream &argInStream,
@@ -50,7 +51,36 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
 }
 
 bool Node::Compare(const Item *argOtherItem) {
-  return Item::Compare(argOtherItem);
+  if (Item::Compare(argOtherItem) == false) {
+    return false;
+  }
+
+  const auto otherNode = dynamic_cast<const Node *>(argOtherItem);
+  if (nullptr == otherNode) {
+    return false;
+  }
+
+  // Check that all items of this node have equivalents in the other node
+  for (const auto &item : items) {
+    if (std::find_if(std::begin(otherNode->items), std::end(otherNode->items),
+                     [&item](const std::shared_ptr<Item> &argSharedPtrItem) {
+                       return item->Compare(argSharedPtrItem.get());
+                     }) == std::end(otherNode->items)) {
+      return false;
+    }
+  }
+
+  // Check that all items of the other node have equivalents in this node
+  for (const auto &item : otherNode->items) {
+    if (std::find_if(std::begin(items), std::end(items),
+                     [&item](const std::shared_ptr<Item> &argSharedPtrItem) {
+                       return item->Compare(argSharedPtrItem.get());
+                     }) == std::end(items)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 std::string Node::GetStringRep() const {
