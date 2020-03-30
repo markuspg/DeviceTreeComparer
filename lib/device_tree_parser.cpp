@@ -50,6 +50,11 @@ std::unique_ptr<RootNode> DeviceTreeParser::ParseFile() {
     return nullptr;
   }
   const auto fileSize = inputFile.tellg();
+  if (fileSize < 0) {
+    std::cerr << "Retrieved invalid file size for file: " << deviceTreeFilePath
+              << "\n";
+    return nullptr;
+  }
   inputFile.seekg(0);
   if (inputFile.fail()) {
     std::cerr << "Failed to seek to the start of file: " << deviceTreeFilePath
@@ -72,7 +77,8 @@ std::unique_ptr<RootNode> DeviceTreeParser::ParseFile() {
   }
 
   // Create a string and a stream object working on that string
-  std::string inputString{reinterpret_cast<char *>(inputBuf.data())};
+  std::string inputString{reinterpret_cast<char *>(inputBuf.data()),
+                          static_cast<std::string::size_type>(fileSize)};
   std::istringstream inputStream{inputString};
 
   // Iterate over all the lines of the file
