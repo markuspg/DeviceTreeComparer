@@ -35,8 +35,13 @@ int main(int argc, char *argv[]) {
 
   bool compare = true;
   bool displayHelp = false;
+  bool extend = false;
   bool merge_file_2_into_file_1 = false;
+  bool purge = false;
   for (auto i = 1; i < argc; ++i) {
+    if (std::string{argv[i]} == "-e") {
+      extend = true;
+    }
     if (std::string{argv[i]} == "-h") {
       displayHelp = true;
       break;
@@ -45,19 +50,34 @@ int main(int argc, char *argv[]) {
       compare = false;
       merge_file_2_into_file_1 = true;
     }
+    if (std::string{argv[i]} == "-p") {
+      purge = true;
+    }
   }
 
   if (displayHelp) {
-    std::cout << "DeviceTreeComparer [OPTIONS] FILE_1 FILE_2\n\n"
-              << "Without any options this tool compares the two device tree "
-                 "source files and\nreturns '0' if they are equal or '1' if "
-                 "they differ.\n\n"
-              << "Options:\n"
-              << "\t-h: Display this help text\n"
-              << "\t-m: Overwrite options of FILE_1 found both in FILE_1 and "
-                 "FILE_2 with\n\t    FILE_2's values and print the result to "
-                 "stdout\n";
+    std::cout
+        << "DeviceTreeComparer [OPTIONS] FILE_1 FILE_2\n\n"
+        << "Without any options this tool compares the two device tree "
+           "source files and\nreturns '0' if they are equal or '1' if "
+           "they differ.\n\n"
+        << "Options:\n"
+        << "\t-e: Add entries which are in FILE_2 but not in FILE_1 to "
+           "FILE_1 (only\n\t    in combination with \"-m\")\n"
+        << "\t-h: Display this help text\n"
+        << "\t-m: Overwrite options of FILE_1 found both in FILE_1 and "
+           "FILE_2 with\n\t    FILE_2's values and print the result to "
+           "stdout\n"
+        << "\t-p: Purge entries which are in FILE_1 but not in FILE_2 from "
+           "FILE_1\n\t    (only in combination with \"-m\")\n";
+
     return 0;
+  }
+
+  if ((extend && !merge_file_2_into_file_1) ||
+      (purge && !merge_file_2_into_file_1)) {
+    std::cerr << "Invalid combination of commandline options\n";
+    return 7;
   }
 
   if (argc < 3) {
