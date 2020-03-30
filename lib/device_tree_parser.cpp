@@ -33,28 +33,28 @@ DeviceTreeParser::DeviceTreeParser(const std::string &argFilePath)
 
 DeviceTreeParser::~DeviceTreeParser() {}
 
-bool DeviceTreeParser::ParseFile() {
+std::unique_ptr<RootNode> DeviceTreeParser::ParseFile() {
   // Open the file and determine its size
   std::ifstream inputFile;
   inputFile.open(deviceTreeFilePath);
   if (inputFile.fail()) {
     std::cerr << "Failed to open device tree file: " << deviceTreeFilePath
               << "\n";
-    return false;
+    return nullptr;
   }
 
   inputFile.seekg(0, std::ios_base::end);
   if (inputFile.fail()) {
     std::cerr << "Failed to seek to the end of file: " << deviceTreeFilePath
               << "\n";
-    return false;
+    return nullptr;
   }
   const auto fileSize = inputFile.tellg();
   inputFile.seekg(0);
   if (inputFile.fail()) {
     std::cerr << "Failed to seek to the start of file: " << deviceTreeFilePath
               << "\n";
-    return false;
+    return nullptr;
   }
 
   // Read the file into a buffer and close it afterwards
@@ -63,12 +63,12 @@ bool DeviceTreeParser::ParseFile() {
   inputFile.read(reinterpret_cast<char *>(inputBuf.data()), fileSize);
   if (inputFile.gcount() != fileSize) {
     std::cerr << "Failed to read file: " << deviceTreeFilePath << "\n";
-    return false;
+    return nullptr;
   }
   inputFile.close();
   if (inputFile.fail()) {
     std::cerr << "Failed to close file: " << deviceTreeFilePath << "\n";
-    return false;
+    return nullptr;
   }
 
   // Create a string and a stream object working on that string
@@ -77,6 +77,7 @@ bool DeviceTreeParser::ParseFile() {
 
   // Iterate over all the lines of the file
   std::string line;
+  std::unique_ptr<RootNode> rootNode;
   while (std::getline(inputStream, line)) {
     if (line.empty()) {
       continue;
@@ -91,5 +92,5 @@ bool DeviceTreeParser::ParseFile() {
     std::cout << line << "\n";
   }
 
-  return true;
+  return rootNode;
 }

@@ -26,6 +26,7 @@
 
 #include "root_node.h"
 
+#include <memory>
 #include <string>
 
 class DeviceTreeParser {
@@ -33,12 +34,10 @@ public:
   DeviceTreeParser(const std::string &argFilePath);
   ~DeviceTreeParser();
 
-  const std::unique_ptr<RootNode> &GetRootNode() const noexcept { return rootNode; }
-  bool ParseFile();
+  std::unique_ptr<RootNode> ParseFile();
 
 private:
   const std::string deviceTreeFilePath;
-  std::unique_ptr<RootNode> rootNode;
 };
 
 #endif // DEVICE_TREE_PARSER_H

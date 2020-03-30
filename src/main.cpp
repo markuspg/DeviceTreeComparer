@@ -36,17 +36,18 @@ int main(int argc, char *argv[]) {
   const std::string file2{argv[2]};
 
   DeviceTreeParser parserFile1{file1};
-  if (parserFile1.ParseFile() == false) {
+  const auto rootNode1 = parserFile1.ParseFile();
+  if (!rootNode1) {
     std::cerr << "Failed to parse file: " << file1 << "\n";
     return 2;
   }
   DeviceTreeParser parserFile2{file2};
-  if (parserFile2.ParseFile() == false) {
+  const auto rootNode2 = parserFile2.ParseFile();
+  if (!rootNode2) {
     std::cerr << "Failed to parse file: " << file2 << "\n";
     return 3;
   }
-  CompareNodes(*parserFile1.GetRootNode().get(),
-               *parserFile2.GetRootNode().get());
+  CompareNodes(*rootNode1.get(), *rootNode2.get());
 
   return 0;
 }
