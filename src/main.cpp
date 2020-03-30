@@ -71,7 +71,6 @@ int main(int argc, char *argv[]) {
     std::cerr << "Failed to parse file: " << file2 << "\n";
     return 5;
   }
-  CompareNodes(*rootNode1.get(), *rootNode2.get());
 
   return 0;
 }

@@ -30,10 +30,6 @@
 #include <sstream>
 #include <vector>
 
-class Node;
-
-void CompareNodes(const Node &argNodeA, const Node &argNodeB);
-
 class Node : public Item {
 public:
   Node(const std::string &argLine, std::istringstream &argInStream,
@@ -49,8 +45,6 @@ protected:
 
 private:
   std::vector<std::shared_ptr<Item>> items;
-
-  friend void CompareNodes(const Node &, const Node &);
 };
 
 #endif // NODE_H
