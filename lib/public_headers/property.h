@@ -32,8 +32,6 @@ public:
                                              const Node *argParentNode);
   virtual ~Property();
 
-  const std::string &GetName() const noexcept { return name; }
-
 protected:
   Property(const std::string &argName, const Node *argParentNode)
       : Item{argParentNode->GetLevel() + 1, argName} {}
