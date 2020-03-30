@@ -27,6 +27,10 @@
 
 Property::~Property() {}
 
+bool Property::Compare(const Item *argOtherItem) {
+  return Item::Compare(argOtherItem);
+}
+
 std::shared_ptr<Property> Property::Construct(const std::string &argLine,
                                               const Node *argParentNode) {
   const auto propertyText{
@@ -45,8 +49,16 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
 
 std::string Property::GetStringRep() const { return GetPrependedTabs() + name; }
 
+bool PropertyValueLess::Compare(const Item *argOtherItem) {
+  return Property::Compare(argOtherItem);
+}
+
 std::string PropertyValueLess::GetStringRep() const {
   return Property::GetStringRep() + ";";
+}
+
+bool PropertyValueString::Compare(const Item *argOtherItem) {
+  return Property::Compare(argOtherItem);
 }
 
 std::string PropertyValueString::GetStringRep() const {

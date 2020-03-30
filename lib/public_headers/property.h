@@ -32,6 +32,8 @@ public:
                                              const Node *argParentNode);
   virtual ~Property();
 
+  bool Compare(const Item *argOtherItem) override;
+
 protected:
   Property(const std::string &argName, const Node *argParentNode)
       : Item{argParentNode->GetLevel() + 1, argName} {}
@@ -40,6 +42,9 @@ protected:
 };
 
 class PropertyValueLess : public Property {
+public:
+  bool Compare(const Item *argOtherItem) override;
+
 protected:
   std::string GetStringRep() const override;
 
@@ -52,6 +57,7 @@ private:
 
 class PropertyValueString : public Property {
 public:
+  bool Compare(const Item *argOtherItem) override;
   const std::string &GetValue() const noexcept { return value; }
 
 protected:

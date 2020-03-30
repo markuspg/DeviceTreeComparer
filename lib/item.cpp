@@ -27,6 +27,18 @@
 
 Item::~Item() {}
 
-void Item::Print() const { std::cout << GetStringRep() << "\n"; }
+bool Item::Compare(const Item *argOtherItem) {
+  if (nullptr == argOtherItem) {
+    return false;
+  }
+
+  if (dynamic_cast<const Item *>(argOtherItem) != nullptr) {
+    return true;
+  }
+
+  return false;
+}
 
 std::string Item::GetPrependedTabs() const { return std::string(level, '\t'); }
+
+void Item::Print() const { std::cout << GetStringRep() << "\n"; }

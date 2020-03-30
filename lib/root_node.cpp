@@ -25,3 +25,7 @@
 
 RootNode::RootNode(const std::string &argLine, std::istringstream &argInStream)
     : Node{argLine, argInStream, nullptr} {}
+
+bool RootNode::Compare(const Item *argOtherItem) {
+  return Node::Compare(argOtherItem);
+}

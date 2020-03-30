@@ -49,6 +49,10 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
   }
 }
 
+bool Node::Compare(const Item *argOtherItem) {
+  return Item::Compare(argOtherItem);
+}
+
 std::string Node::GetStringRep() const {
   std::string resultStr;
   resultStr.append(GetPrependedTabs() + name + " {\n");

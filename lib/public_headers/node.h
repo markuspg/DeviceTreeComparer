@@ -40,6 +40,7 @@ public:
   Node(const std::string &argLine, std::istringstream &argInStream,
        const Node *argParentNode);
 
+  bool Compare(const Item *argOtherItem) override;
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
 
