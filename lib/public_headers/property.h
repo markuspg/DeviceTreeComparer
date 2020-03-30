@@ -32,7 +32,7 @@ public:
                                              const Node *argParentNode);
   virtual ~Property();
 
-  bool Compare(const Item *argOtherItem) override = 0;
+  bool Compare(const Item *argOtherItem) const override = 0;
   void Merge(const Item *argOtherItem) override = 0;
 
 protected:
@@ -44,7 +44,7 @@ protected:
 
 class PropertyValueLess : public Property {
 public:
-  bool Compare(const Item *argOtherItem) override;
+  bool Compare(const Item *argOtherItem) const override;
   void Merge(const Item *argOtherItem) override;
 
 protected:
@@ -59,7 +59,7 @@ private:
 
 class PropertyValueString : public Property {
 public:
-  bool Compare(const Item *argOtherItem) override;
+  bool Compare(const Item *argOtherItem) const override;
   const std::string &GetValue() const noexcept { return value; }
   void Merge(const Item *argOtherItem) override;
 

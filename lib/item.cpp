@@ -28,7 +28,7 @@
 
 Item::~Item() {}
 
-bool Item::Compare(const Item *argOtherItem) {
+bool Item::Compare(const Item *argOtherItem) const {
   if (nullptr == argOtherItem) {
     return false;
   }

@@ -26,7 +26,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <vector>
 
 DeviceTreeParser::DeviceTreeParser(const std::string &argFilePath)
     : deviceTreeFilePath{argFilePath} {}
@@ -95,7 +94,7 @@ std::unique_ptr<RootNode> DeviceTreeParser::ParseFile() {
       rootNode = std::make_unique<RootNode>(line, inputStream);
       continue;
     }
-    std::cout << line << "\n";
+    throw InvalidLineException{};
   }
 
   return rootNode;

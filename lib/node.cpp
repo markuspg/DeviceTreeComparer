@@ -50,7 +50,7 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
   }
 }
 
-bool Node::Compare(const Item *argOtherItem) {
+bool Node::Compare(const Item *argOtherItem) const {
   if (Item::Compare(argOtherItem) == false) {
     return false;
   }

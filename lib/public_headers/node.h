@@ -31,7 +31,6 @@
 #include <vector>
 
 class Node;
-class Property;
 
 void CompareNodes(const Node &argNodeA, const Node &argNodeB);
 
@@ -40,7 +39,7 @@ public:
   Node(const std::string &argLine, std::istringstream &argInStream,
        const Node *argParentNode);
 
-  bool Compare(const Item *argOtherItem) override;
+  bool Compare(const Item *argOtherItem) const override;
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
   void Merge(const Item *argOtherItem) override;

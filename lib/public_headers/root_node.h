@@ -30,7 +30,7 @@ class RootNode : public Node {
 public:
   RootNode(const std::string &argLine, std::istringstream &argInStream);
 
-  bool Compare(const Item *argOtherItem) override;
+  bool Compare(const Item *argOtherItem) const override;
   void Merge(const Item *argOtherItem) override;
 };
 

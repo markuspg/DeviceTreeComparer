@@ -27,7 +27,7 @@
 
 Property::~Property() {}
 
-bool Property::Compare(const Item *argOtherItem) {
+bool Property::Compare(const Item *argOtherItem) const {
   if (false == Item::Compare(argOtherItem)) {
     return false;
   }
@@ -66,7 +66,7 @@ void Property::Merge(const Item *argOtherItem) {
   Item::Merge(argOtherItem);
 }
 
-bool PropertyValueLess::Compare(const Item *argOtherItem) {
+bool PropertyValueLess::Compare(const Item *argOtherItem) const {
   if (false == Property::Compare(argOtherItem)) {
     return false;
   }
@@ -93,7 +93,7 @@ void PropertyValueLess::Merge(const Item *argOtherItem) {
   Property::Merge(argOtherItem);
 }
 
-bool PropertyValueString::Compare(const Item *argOtherItem) {
+bool PropertyValueString::Compare(const Item *argOtherItem) const {
   if (false == Property::Compare(argOtherItem)) {
     return false;
   }

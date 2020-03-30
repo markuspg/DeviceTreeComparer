@@ -30,7 +30,7 @@ class Item {
 public:
   virtual ~Item();
 
-  virtual bool Compare(const Item *argOtherItem);
+  virtual bool Compare(const Item *argOtherItem) const = 0;
   uint_fast16_t GetLevel() const noexcept { return level; }
   const std::string &GetName() const noexcept { return name; }
   virtual std::string GetStringRep() const = 0;
