@@ -102,13 +102,24 @@ bool Node::IsNodeStartLine(const std::string &argLine) {
 }
 
 void Node::Merge(const Item *argOtherItem) {
-  if (dynamic_cast<const Node *>(argOtherItem) == nullptr) {
+  const auto otherNode = dynamic_cast<const Node *>(argOtherItem);
+  if (otherNode == nullptr) {
     throw std::invalid_argument{"Try to merge unrelated class into Node"};
   }
 
   Item::Merge(argOtherItem);
 
-  // TODO(markuspg) Add code for recursively merging all items
+  // Merge items existing in this item with their counterparts of the other item
+  for (const auto &sharedPtrItem : items) {
+    const auto counterpart = std::find_if(
+        std::begin(otherNode->items), std::end(otherNode->items),
+        [&sharedPtrItem](const std::shared_ptr<Item> &argOtherSharedPtrItem) {
+          return sharedPtrItem->GetName() == argOtherSharedPtrItem->GetName();
+        });
+    if (counterpart != std::end(otherNode->items)) {
+      sharedPtrItem->Merge(counterpart->get());
+    }
+  }
 }
 
 void CompareNodes(const Node &argNodeA, const Node &argNodeB) {
