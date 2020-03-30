@@ -58,6 +58,14 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
 
 std::string Property::GetStringRep() const { return GetPrependedTabs() + name; }
 
+void Property::Merge(const Item *argOtherItem) {
+  if (dynamic_cast<const Property *>(argOtherItem) == nullptr) {
+    throw std::invalid_argument{"Try to merge unrelated class into Property"};
+  }
+
+  Item::Merge(argOtherItem);
+}
+
 bool PropertyValueLess::Compare(const Item *argOtherItem) {
   if (false == Property::Compare(argOtherItem)) {
     return false;
@@ -74,6 +82,15 @@ bool PropertyValueLess::Compare(const Item *argOtherItem) {
 
 std::string PropertyValueLess::GetStringRep() const {
   return Property::GetStringRep() + ";";
+}
+
+void PropertyValueLess::Merge(const Item *argOtherItem) {
+  if (dynamic_cast<const PropertyValueLess *>(argOtherItem) == nullptr) {
+    throw std::invalid_argument{
+        "Try to merge unrelated class into PropertyValueLess"};
+  }
+
+  Property::Merge(argOtherItem);
 }
 
 bool PropertyValueString::Compare(const Item *argOtherItem) {
@@ -96,4 +113,17 @@ bool PropertyValueString::Compare(const Item *argOtherItem) {
 
 std::string PropertyValueString::GetStringRep() const {
   return Property::GetStringRep() + " = " + value + ";";
+}
+
+void PropertyValueString::Merge(const Item *argOtherItem) {
+  const auto otherProperty =
+      dynamic_cast<const PropertyValueString *>(argOtherItem);
+  if (otherProperty == nullptr) {
+    throw std::invalid_argument{
+        "Try to merge unrelated class into PropertyValueString"};
+  }
+
+  Property::Merge(argOtherItem);
+
+  value = otherProperty->value;
 }

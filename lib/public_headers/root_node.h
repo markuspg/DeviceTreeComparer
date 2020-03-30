@@ -31,6 +31,7 @@ public:
   RootNode(const std::string &argLine, std::istringstream &argInStream);
 
   bool Compare(const Item *argOtherItem) override;
+  void Merge(const Item *argOtherItem) override;
 };
 
 #endif // ROOT_NODE_H

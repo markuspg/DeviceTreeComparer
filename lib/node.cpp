@@ -101,6 +101,16 @@ bool Node::IsNodeStartLine(const std::string &argLine) {
   return argLine.find('{') != std::string::npos;
 }
 
+void Node::Merge(const Item *argOtherItem) {
+  if (dynamic_cast<const Node *>(argOtherItem) == nullptr) {
+    throw std::invalid_argument{"Try to merge unrelated class into Node"};
+  }
+
+  Item::Merge(argOtherItem);
+
+  // TODO(markuspg) Add code for recursively merging all items
+}
+
 void CompareNodes(const Node &argNodeA, const Node &argNodeB) {
   bool found = false;
 

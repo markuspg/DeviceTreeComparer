@@ -24,6 +24,7 @@
 #include "item.h"
 
 #include <iostream>
+#include <stdexcept>
 
 Item::~Item() {}
 
@@ -44,5 +45,12 @@ bool Item::Compare(const Item *argOtherItem) {
 }
 
 std::string Item::GetPrependedTabs() const { return std::string(level, '\t'); }
+
+void Item::Merge(const Item *argOtherItem) {
+  // Assure that the to be merged items are equal in terms of level and name
+  if ((level != argOtherItem->level) || (name != argOtherItem->name)) {
+    throw std::invalid_argument{"Attempt to merge non-related Item instance"};
+  }
+}
 
 void Item::Print() const { std::cout << GetStringRep() << "\n"; }

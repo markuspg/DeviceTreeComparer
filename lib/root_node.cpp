@@ -33,3 +33,11 @@ bool RootNode::Compare(const Item *argOtherItem) {
 
   return Node::Compare(argOtherItem);
 }
+
+void RootNode::Merge(const Item *argOtherItem) {
+  if (dynamic_cast<const RootNode *>(argOtherItem) == nullptr) {
+    throw std::invalid_argument{"Try to merge unrelated class into RootNode"};
+  }
+
+  Node::Merge(argOtherItem);
+}

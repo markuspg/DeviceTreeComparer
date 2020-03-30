@@ -34,6 +34,7 @@ public:
   uint_fast16_t GetLevel() const noexcept { return level; }
   const std::string &GetName() const noexcept { return name; }
   virtual std::string GetStringRep() const = 0;
+  virtual void Merge(const Item *argOtherItem) = 0;
   void Print() const;
 
 protected:
