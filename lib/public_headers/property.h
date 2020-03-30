@@ -32,8 +32,8 @@ public:
                                              const Node *argParentNode);
   virtual ~Property();
 
-  bool Compare(const Item *argOtherItem) override;
-  void Merge(const Item *argOtherItem) override;
+  bool Compare(const Item *argOtherItem) override = 0;
+  void Merge(const Item *argOtherItem) override = 0;
 
 protected:
   Property(const std::string &argName, const Node *argParentNode)
