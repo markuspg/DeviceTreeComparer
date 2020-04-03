@@ -24,6 +24,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <memory>
 #include <string>
 
 class Item {
@@ -33,6 +34,8 @@ public:
     PROPERTY,
     ROOT_NODE,
   };
+
+  using SharedPtrItem = std::shared_ptr<Item>;
 
   virtual ~Item();
 

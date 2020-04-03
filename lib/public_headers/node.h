@@ -26,7 +26,6 @@
 
 #include "item.h"
 
-#include <memory>
 #include <sstream>
 #include <vector>
 
@@ -44,7 +43,7 @@ protected:
   std::string GetStringRep() const override;
 
 private:
-  std::vector<std::shared_ptr<Item>> items;
+  std::vector<SharedPtrItem> items;
 };
 
 #endif // NODE_H

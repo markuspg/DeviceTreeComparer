@@ -64,7 +64,7 @@ bool Node::Compare(const Item *argOtherItem) const {
   // Check that all items of this node have equivalents in the other node
   for (const auto &item : items) {
     if (std::find_if(std::begin(otherNode->items), std::end(otherNode->items),
-                     [&item](const std::shared_ptr<Item> &argSharedPtrItem) {
+                     [&item](const SharedPtrItem &argSharedPtrItem) {
                        return item->Compare(argSharedPtrItem.get());
                      }) == std::end(otherNode->items)) {
       return false;
@@ -74,7 +74,7 @@ bool Node::Compare(const Item *argOtherItem) const {
   // Check that all items of the other node have equivalents in this node
   for (const auto &item : otherNode->items) {
     if (std::find_if(std::begin(items), std::end(items),
-                     [&item](const std::shared_ptr<Item> &argSharedPtrItem) {
+                     [&item](const SharedPtrItem &argSharedPtrItem) {
                        return item->Compare(argSharedPtrItem.get());
                      }) == std::end(items)) {
       return false;
@@ -132,7 +132,7 @@ void Node::Merge(const Item *argOtherItem) {
   for (const auto &sharedPtrItem : items) {
     const auto counterpart = std::find_if(
         std::begin(otherNode->items), std::end(otherNode->items),
-        [&sharedPtrItem](const std::shared_ptr<Item> &argOtherSharedPtrItem) {
+        [&sharedPtrItem](const SharedPtrItem &argOtherSharedPtrItem) {
           return sharedPtrItem->GetName() == argOtherSharedPtrItem->GetName();
         });
     if (counterpart != std::end(otherNode->items)) {
