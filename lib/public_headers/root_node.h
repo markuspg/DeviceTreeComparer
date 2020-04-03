@@ -32,6 +32,9 @@ public:
 
   bool Compare(const Item *argOtherItem) const override;
   void Merge(const Item *argOtherItem) override;
+
+protected:
+  std::string GetStringRep() const override;
 };
 
 #endif // ROOT_NODE_H

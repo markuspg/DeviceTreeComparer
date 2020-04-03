@@ -34,6 +34,10 @@ bool RootNode::Compare(const Item *argOtherItem) const {
   return Node::Compare(argOtherItem);
 }
 
+std::string RootNode::GetStringRep() const {
+  return "/dts-v1/;\n\n" + Node::GetStringRep();
+}
+
 void RootNode::Merge(const Item *argOtherItem) {
   if (dynamic_cast<const RootNode *>(argOtherItem) == nullptr) {
     throw std::invalid_argument{"Try to merge unrelated class into RootNode"};
