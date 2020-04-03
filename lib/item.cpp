@@ -21,10 +21,28 @@
  * SOFTWARE.
  */
 
-#include "item.h"
+#include "property.h"
+#include "root_node.h"
 
+#include <exception>
 #include <iostream>
 #include <stdexcept>
+
+class EmptyOrInvalSharedPtrItemException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *EmptyOrInvalSharedPtrItemException::what() const noexcept {
+  return "Encountered empty or invalid SharedPtrItem on copy attempt";
+}
+
+class UnknownSharedPtrItemMemberTypeException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *UnknownSharedPtrItemMemberTypeException::what() const noexcept {
+  return "Encountered unknown member type in SharedPtrItem";
+}
 
 Item::~Item() {}
 
@@ -54,3 +72,33 @@ void Item::Merge(const Item *argOtherItem) {
 }
 
 void Item::Print() const { std::cout << GetStringRep() << "\n"; }
+
+Item::SharedPtrItem
+CopySharedPtrItem(const Item::SharedPtrConstItem &argSharedPtrConstItem) {
+  const auto itemPtr = dynamic_cast<const Item *>(argSharedPtrConstItem.get());
+
+  if (itemPtr == nullptr) {
+    throw EmptyOrInvalSharedPtrItemException{};
+  }
+
+  if (dynamic_cast<const Node *>(itemPtr)) {
+    return std::make_shared<Node>(*reinterpret_cast<const Node *>(itemPtr));
+  }
+
+  if (dynamic_cast<const PropertyValueLess *>(itemPtr)) {
+    return std::make_shared<PropertyValueLess>(
+        *reinterpret_cast<const PropertyValueLess *>(itemPtr));
+  }
+
+  if (dynamic_cast<const PropertyValueString *>(itemPtr)) {
+    return std::make_shared<PropertyValueString>(
+        *reinterpret_cast<const PropertyValueString *>(itemPtr));
+  }
+
+  if (dynamic_cast<const RootNode *>(itemPtr)) {
+    return std::make_shared<RootNode>(
+        *reinterpret_cast<const RootNode *>(itemPtr));
+  }
+
+  throw UnknownSharedPtrItemMemberTypeException{};
+}

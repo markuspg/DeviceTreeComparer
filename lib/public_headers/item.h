@@ -36,6 +36,7 @@ public:
   };
 
   using SharedPtrItem = std::shared_ptr<Item>;
+  using SharedPtrConstItem = std::shared_ptr<const Item>;
 
   virtual ~Item();
 
@@ -62,5 +63,8 @@ protected:
   const std::string name;
   const Type type;
 };
+
+Item::SharedPtrItem
+CopySharedPtrItem(const Item::SharedPtrConstItem &argSharedPtrConstItem);
 
 #endif // ITEM_H

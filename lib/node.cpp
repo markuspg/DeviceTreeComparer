@@ -51,6 +51,12 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
   }
 }
 
+Node::Node(const Node &argNode) : Item{argNode} {
+  for (const auto &sharedPtrItem : argNode.items) {
+    items.emplace_back(CopySharedPtrItem(sharedPtrItem));
+  }
+}
+
 bool Node::Compare(const Item *argOtherItem) const {
   if (Item::Compare(argOtherItem) == false) {
     return false;

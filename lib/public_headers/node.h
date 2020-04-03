@@ -33,6 +33,8 @@ class Node : public Item {
 public:
   Node(const std::string &argLine, std::istringstream &argInStream,
        const Node *argParentNode);
+  Node(const Node &argNode);
+  Node &operator=(const Node &argNode);
 
   bool Compare(const Item *argOtherItem) const override;
   static bool IsNodeEndLine(const std::string &argLine);
