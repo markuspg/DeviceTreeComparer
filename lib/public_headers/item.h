@@ -30,8 +30,7 @@ class Item {
 public:
   enum class Type {
     NODE,
-    PROPERTY_VALUE_LESS,
-    PROPERTY_VALUE_STRING,
+    PROPERTY,
     ROOT_NODE,
   };
 
