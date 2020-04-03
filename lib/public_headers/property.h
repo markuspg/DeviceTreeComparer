@@ -36,8 +36,8 @@ public:
   void Merge(const Item *argOtherItem) override = 0;
 
 protected:
-  Property(const std::string &argName, const Node *argParentNode)
-      : Item{argParentNode->GetLevel() + 1, argName} {}
+  Property(const std::string &argName, const Node *argParentNode, Type argType)
+      : Item{argParentNode->GetLevel() + 1, argName, argType} {}
 
   std::string GetStringRep() const override;
 };
@@ -52,7 +52,7 @@ protected:
 
 private:
   PropertyValueLess(const std::string &argName, const Node *argParentNode)
-      : Property(argName, argParentNode) {}
+      : Property(argName, argParentNode, Type::PROPERTY_VALUE_LESS) {}
 
   friend Property;
 };
@@ -69,7 +69,8 @@ protected:
 private:
   PropertyValueString(const std::string &argName, const Node *argParentNode,
                       const std::string &argValue)
-      : Property{argName, argParentNode}, value{argValue} {}
+      : Property{argName, argParentNode, Type::PROPERTY_VALUE_STRING},
+        value{argValue} {}
 
   std::string value;
 

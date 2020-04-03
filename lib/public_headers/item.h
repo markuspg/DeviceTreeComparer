@@ -28,23 +28,34 @@
 
 class Item {
 public:
+  enum class Type {
+    NODE,
+    PROPERTY_VALUE_LESS,
+    PROPERTY_VALUE_STRING,
+    ROOT_NODE,
+  };
+
   virtual ~Item();
 
   virtual bool Compare(const Item *argOtherItem) const = 0;
   uint_fast16_t GetLevel() const noexcept { return level; }
   const std::string &GetName() const noexcept { return name; }
   virtual std::string GetStringRep() const = 0;
+  bool IsSameType(const Item &argOtherItem) const noexcept {
+    return type == argOtherItem.type;
+  }
   virtual void Merge(const Item *argOtherItem) = 0;
   void Print() const;
 
 protected:
-  Item(uint_fast16_t argLevel, const std::string &argName)
-      : level{argLevel}, name{argName} {}
+  Item(uint_fast16_t argLevel, const std::string &argName, Type argType)
+      : level{argLevel}, name{argName}, type{argType} {}
 
   std::string GetPrependedTabs() const;
 
   const uint_fast16_t level = 0;
   const std::string name;
+  const Type type;
 };
 
 #endif // ITEM_H
