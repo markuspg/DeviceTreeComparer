@@ -50,6 +50,8 @@ public:
 protected:
   Item(uint_fast16_t argLevel, const std::string &argName, Type argType)
       : level{argLevel}, name{argName}, type{argType} {}
+  Item(const Item &argItem) = default;
+  Item &operator=(const Item &argItem) = default;
 
   std::string GetPrependedTabs() const;
 
