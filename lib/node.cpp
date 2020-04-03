@@ -87,8 +87,26 @@ bool Node::Compare(const Item *argOtherItem) const {
 std::string Node::GetStringRep() const {
   std::string resultStr;
   resultStr.append(GetPrependedTabs() + name + " {\n");
-  for (const auto &item : items) {
-    resultStr.append(item->GetStringRep() + "\n");
+  for (auto cit = items.cbegin(); cit != items.cend(); ++cit) {
+    // If the item at hand is neither the first nor the last one ...
+    if (cit != items.cbegin() && cit != items.cend()) {
+      // ... check if the previous item is either of another type or if both
+      // items are of type "Node" ...
+      if (((*(*(cit - 1))).IsSameType(*(*cit).get()) == false) ||
+          (((*(cit - 1))->GetType() == Type::NODE) &&
+           ((*cit)->GetType() == Type::NODE))) {
+        // ... and insert a newline if so
+        resultStr.append("\n");
+      }
+      // If the item at hand is at the very first one ...
+    } else if (cit == items.cbegin()) {
+      // ... and of type "Node", ...
+      if ((*cit)->GetType() == Type::NODE) {
+        // ... then insert a newline
+        resultStr.append("\n");
+      }
+    }
+    resultStr.append((*cit)->GetStringRep() + "\n");
   }
   resultStr.append(GetPrependedTabs() + "};");
   return resultStr;
