@@ -55,7 +55,8 @@ bool Item::Compare(const Item *argOtherItem) const {
     return false;
   }
 
-  if ((level == argOtherItem->level) && (name == argOtherItem->name)) {
+  if ((level == argOtherItem->level) && (name == argOtherItem->name) &&
+      (type == argOtherItem->type)) {
     return true;
   }
 
@@ -70,7 +71,8 @@ void Item::Merge(const Item *argOtherItem, bool argAddFromOther,
   (void)argPurgeItemsNotInOther;
 
   // Assure that the to be merged items are equal in terms of level and name
-  if ((level != argOtherItem->level) || (name != argOtherItem->name)) {
+  if ((level != argOtherItem->level) || (name != argOtherItem->name) ||
+      (type != argOtherItem->type)) {
     throw std::invalid_argument{"Attempt to merge non-related Item instance"};
   }
 }
