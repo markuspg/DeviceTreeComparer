@@ -25,6 +25,8 @@
 #include "node.h"
 #include "string_utils.h"
 
+#include <regex>
+
 class InvalidPropertyNameException : public std::exception {
   const char *what() const noexcept override;
 };
@@ -33,6 +35,7 @@ const char *InvalidPropertyNameException::what() const noexcept {
   return "Encountered invalid property name on device tree parsing";
 }
 
+static const std::regex propertyNameRegex{"^\\t+([0-9a-zA-Z,._+?#-]+)( = |;)"};
 constexpr auto VALID_PROPERTY_NAME_CHARS =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,._+?#-";
 
@@ -57,8 +60,11 @@ bool Property::Compare(const Item *argOtherItem) const {
 
 std::shared_ptr<Property> Property::Construct(const std::string &argLine,
                                               const Node *argParentNode) {
-  const auto propertyText{
-      RemoveTrailingSemicolon(RemoveLeadingWhitespace(argLine))};
+  std::smatch searchMatch;
+  if (std::regex_search(argLine, searchMatch, propertyNameRegex) == false) {
+    throw InvalidPropertyNameException{};
+  }
+  const auto propertyText{searchMatch.str(1)};
 
   const auto dividerPos = propertyText.find(" = ");
   if (dividerPos == std::string::npos) {
