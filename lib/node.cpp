@@ -81,6 +81,10 @@ bool Node::Compare(const Item *argOtherItem) const {
     return false;
   }
 
+  if (unitAddress != otherNode->GetUnitAddress()) {
+    return false;
+  }
+
   // Check that all items of this node have equivalents in the other node
   for (const auto &item : items) {
     if (std::find_if(std::begin(otherNode->items), std::end(otherNode->items),
