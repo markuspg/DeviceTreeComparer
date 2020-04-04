@@ -39,7 +39,8 @@ public:
   bool Compare(const Item *argOtherItem) const override;
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
-  void Merge(const Item *argOtherItem, bool argAddFromOther) override;
+  void Merge(const Item *argOtherItem, bool argAddFromOther,
+             bool argPurgeItemsNotInOther) override;
 
 protected:
   std::string GetStringRep() const override;

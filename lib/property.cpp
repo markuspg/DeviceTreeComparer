@@ -58,12 +58,13 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
 
 std::string Property::GetStringRep() const { return GetPrependedTabs() + name; }
 
-void Property::Merge(const Item *argOtherItem, bool argAddFromOther) {
+void Property::Merge(const Item *argOtherItem, bool argAddFromOther,
+                     bool argPurgeItemsNotInOther) {
   if (dynamic_cast<const Property *>(argOtherItem) == nullptr) {
     throw std::invalid_argument{"Try to merge unrelated class into Property"};
   }
 
-  Item::Merge(argOtherItem, argAddFromOther);
+  Item::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 }
 
 bool PropertyValueLess::Compare(const Item *argOtherItem) const {
@@ -84,13 +85,14 @@ std::string PropertyValueLess::GetStringRep() const {
   return Property::GetStringRep() + ";";
 }
 
-void PropertyValueLess::Merge(const Item *argOtherItem, bool argAddFromOther) {
+void PropertyValueLess::Merge(const Item *argOtherItem, bool argAddFromOther,
+                              bool argPurgeItemsNotInOther) {
   if (dynamic_cast<const PropertyValueLess *>(argOtherItem) == nullptr) {
     throw std::invalid_argument{
         "Try to merge unrelated class into PropertyValueLess"};
   }
 
-  Property::Merge(argOtherItem, argAddFromOther);
+  Property::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 }
 
 bool PropertyValueString::Compare(const Item *argOtherItem) const {
@@ -115,8 +117,8 @@ std::string PropertyValueString::GetStringRep() const {
   return Property::GetStringRep() + " = " + value + ";";
 }
 
-void PropertyValueString::Merge(const Item *argOtherItem,
-                                bool argAddFromOther) {
+void PropertyValueString::Merge(const Item *argOtherItem, bool argAddFromOther,
+                                bool argPurgeItemsNotInOther) {
   const auto otherProperty =
       dynamic_cast<const PropertyValueString *>(argOtherItem);
   if (otherProperty == nullptr) {
@@ -124,7 +126,7 @@ void PropertyValueString::Merge(const Item *argOtherItem,
         "Try to merge unrelated class into PropertyValueString"};
   }
 
-  Property::Merge(argOtherItem, argAddFromOther);
+  Property::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 
   value = otherProperty->value;
 }

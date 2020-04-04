@@ -38,10 +38,11 @@ std::string RootNode::GetStringRep() const {
   return "/dts-v1/;\n\n" + Node::GetStringRep();
 }
 
-void RootNode::Merge(const Item *argOtherItem, bool argAddFromOther) {
+void RootNode::Merge(const Item *argOtherItem, bool argAddFromOther,
+                     bool argPurgeItemsNotInOther) {
   if (dynamic_cast<const RootNode *>(argOtherItem) == nullptr) {
     throw std::invalid_argument{"Try to merge unrelated class into RootNode"};
   }
 
-  Node::Merge(argOtherItem, argAddFromOther);
+  Node::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 }

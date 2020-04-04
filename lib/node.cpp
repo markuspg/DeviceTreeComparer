@@ -126,24 +126,32 @@ bool Node::IsNodeStartLine(const std::string &argLine) {
   return argLine.find('{') != std::string::npos;
 }
 
-void Node::Merge(const Item *argOtherItem, const bool argAddFromOther) {
+void Node::Merge(const Item *argOtherItem, const bool argAddFromOther,
+                 bool argPurgeItemsNotInOther) {
   const auto otherNode = dynamic_cast<const Node *>(argOtherItem);
   if (otherNode == nullptr) {
     throw std::invalid_argument{"Try to merge unrelated class into Node"};
   }
 
-  Item::Merge(argOtherItem, argAddFromOther);
+  Item::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 
   // Merge items existing in this item with their counterparts of the other item
-  for (const auto &sharedPtrItem : items) {
+  for (auto cit = items.cbegin(); cit != items.cend();) {
     const auto counterpart = std::find_if(
         std::begin(otherNode->items), std::end(otherNode->items),
-        [&sharedPtrItem](const SharedPtrItem &argOtherSharedPtrItem) {
-          return sharedPtrItem->GetName() == argOtherSharedPtrItem->GetName();
+        [&cit](const SharedPtrItem &argOtherSharedPtrItem) {
+          return (*cit)->GetName() == argOtherSharedPtrItem->GetName();
         });
     if (counterpart != std::end(otherNode->items)) {
-      sharedPtrItem->Merge(counterpart->get(), argAddFromOther);
+      (*cit)->Merge(counterpart->get(), argAddFromOther,
+                    argPurgeItemsNotInOther);
+    } else {
+      if (argPurgeItemsNotInOther == true) {
+        cit = items.erase(cit);
+        continue;
+      }
     }
+    ++cit;
   }
 
   if (argAddFromOther == true) {
