@@ -80,3 +80,11 @@ private:
 
   friend Property;
 };
+
+class PropertyValueStringList : public Property {};
+
+class PropertyValueU32 : public Property {};
+
+class PropertyValueU64 : public Property {};
+
+class PropertyValuePHandle : public PropertyValueU32 {};
