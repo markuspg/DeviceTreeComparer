@@ -24,6 +24,7 @@
 #include "device_tree_parser.h"
 #include "root_node.h"
 
+#include <exception>
 #include <fstream>
 #include <iostream>
 
@@ -33,6 +34,14 @@ class InvalidLineException : public std::exception {
 
 const char *InvalidLineException::what() const noexcept {
   return "Encountered invalid line on device tree parsing";
+}
+
+class UnsupportedDeviceTreeVersionException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *UnsupportedDeviceTreeVersionException::what() const noexcept {
+  return "The parsed device tree is of an unsupported version";
 }
 
 DeviceTreeParser::DeviceTreeParser(const std::string &argFilePath)
@@ -96,9 +105,15 @@ std::unique_ptr<RootNode> DeviceTreeParser::ParseFile() {
       continue;
     }
     if (line == "/dts-v1/;") {
+      deviceTreeVersion = 1;
       continue;
     }
     if (Node::IsNodeStartLine(line)) {
+      // Verify device tree version before any other steps
+      if (deviceTreeVersion != 1) {
+        throw UnsupportedDeviceTreeVersionException{};
+      }
+
       rootNode = std::make_unique<RootNode>(line, inputStream);
       continue;
     }

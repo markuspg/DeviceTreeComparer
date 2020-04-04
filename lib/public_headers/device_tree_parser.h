@@ -24,6 +24,8 @@
 #ifndef DEVICE_TREE_PARSER_H
 #define DEVICE_TREE_PARSER_H
 
+#include <cstdint>
+#include <limits>
 #include <memory>
 #include <string>
 
@@ -38,6 +40,7 @@ public:
 
 private:
   const std::string deviceTreeFilePath;
+  uint_fast8_t deviceTreeVersion = std::numeric_limits<uint_fast8_t>::max();
 };
 
 #endif // DEVICE_TREE_PARSER_H
