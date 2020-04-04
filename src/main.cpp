@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
     }
     return 1;
   } else if (merge_file_2_into_file_1) {
-    rootNode1->Merge(rootNode2.get());
+    rootNode1->Merge(rootNode2.get(), extend);
     rootNode1->Print();
     return 0;
   }

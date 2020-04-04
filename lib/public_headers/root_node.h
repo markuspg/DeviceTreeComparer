@@ -31,7 +31,7 @@ public:
   RootNode(const std::string &argLine, std::istringstream &argInStream);
 
   bool Compare(const Item *argOtherItem) const override;
-  void Merge(const Item *argOtherItem) override;
+  void Merge(const Item *argOtherItem, bool argAddFromOther) override;
 
 protected:
   std::string GetStringRep() const override;

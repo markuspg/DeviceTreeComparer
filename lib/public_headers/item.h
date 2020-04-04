@@ -48,7 +48,7 @@ public:
   bool IsSameType(const Item &argOtherItem) const noexcept {
     return type == argOtherItem.type;
   }
-  virtual void Merge(const Item *argOtherItem) = 0;
+  virtual void Merge(const Item *argOtherItem, bool argAddFromOther) = 0;
   void Print() const;
 
 protected:

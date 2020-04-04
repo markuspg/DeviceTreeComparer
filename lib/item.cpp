@@ -64,7 +64,7 @@ bool Item::Compare(const Item *argOtherItem) const {
 
 std::string Item::GetPrependedTabs() const { return std::string(level, '\t'); }
 
-void Item::Merge(const Item *argOtherItem) {
+void Item::Merge(const Item *argOtherItem, bool argAddFromOther) {
   // Assure that the to be merged items are equal in terms of level and name
   if ((level != argOtherItem->level) || (name != argOtherItem->name)) {
     throw std::invalid_argument{"Attempt to merge non-related Item instance"};
