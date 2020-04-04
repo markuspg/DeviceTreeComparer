@@ -5,6 +5,7 @@ project(LibDeviceTreeComparer)
 add_library(${PROJECT_NAME}
     device_tree_parser.cpp
     item.cpp
+    label.cpp
     node.cpp
     property.cpp
     root_node.cpp
