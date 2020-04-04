@@ -24,7 +24,6 @@
 #ifndef DEVICE_TREE_PARSER_H
 #define DEVICE_TREE_PARSER_H
 
-#include <exception>
 #include <memory>
 #include <string>
 
@@ -32,12 +31,6 @@ class RootNode;
 
 class DeviceTreeParser {
 public:
-  class InvalidLineException : public std::exception {
-    const char *what() const noexcept override {
-      return "Encountered invalid line on device tree parsing";
-    }
-  };
-
   DeviceTreeParser(const std::string &argFilePath);
   ~DeviceTreeParser();
 

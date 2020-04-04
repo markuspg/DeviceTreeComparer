@@ -27,6 +27,14 @@
 #include <fstream>
 #include <iostream>
 
+class InvalidLineException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *InvalidLineException::what() const noexcept {
+  return "Encountered invalid line on device tree parsing";
+}
+
 DeviceTreeParser::DeviceTreeParser(const std::string &argFilePath)
     : deviceTreeFilePath{argFilePath} {}
 
