@@ -37,13 +37,14 @@ public:
              bool argPurgeItemsNotInOther) override = 0;
 
 protected:
-  Property(const std::string &argName, const Node *argParentNode)
-      : Item{argParentNode->GetLevel() + 1, argName, argParentNode,
-             Type::PROPERTY} {}
+  Property(const std::string &argName, const Node *argParentNode);
   Property(const Property &argItem) = default;
   Property &operator=(const Property &argItem) = default;
 
   std::string GetStringRep() const override;
+
+private:
+  static const std::string &VerifyPropertyName(const std::string &argPropName);
 };
 
 class PropertyEmpty : public Property {

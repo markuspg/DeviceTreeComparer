@@ -200,7 +200,6 @@ const std::string &Node::VerifyNodeName(bool argIsRootNode,
   if ((argIsRootNode == true) && (argNodeName == "/")) {
     return argNodeName;
   }
-  std::cout << argNodeName << std::endl;
   if ((argNodeName.size() < 1) || (argNodeName.size() > 31)) {
     throw InvalidNodeNameException{};
   }

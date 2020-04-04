@@ -25,6 +25,21 @@
 #include "node.h"
 #include "string_utils.h"
 
+class InvalidPropertyNameException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *InvalidPropertyNameException::what() const noexcept {
+  return "Encountered invalid property name on device tree parsing";
+}
+
+constexpr auto VALID_PROPERTY_NAME_CHARS =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,._+?#-";
+
+Property::Property(const std::string &argName, const Node *argParentNode)
+    : Item{argParentNode->GetLevel() + 1, VerifyPropertyName(argName),
+           argParentNode, Type::PROPERTY} {}
+
 Property::~Property() {}
 
 bool Property::Compare(const Item *argOtherItem) const {
@@ -65,6 +80,20 @@ void Property::Merge(const Item *argOtherItem, bool argAddFromOther,
   }
 
   Item::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
+}
+
+const std::string &
+Property::VerifyPropertyName(const std::string &argPropName) {
+  if ((argPropName.size() < 1) || (argPropName.size() > 31)) {
+    throw InvalidPropertyNameException{};
+  }
+
+  if (argPropName.find_first_not_of(VALID_PROPERTY_NAME_CHARS) !=
+      std::string::npos) {
+    throw InvalidPropertyNameException{};
+  }
+
+  return argPropName;
 }
 
 bool PropertyEmpty::Compare(const Item *argOtherItem) const {
