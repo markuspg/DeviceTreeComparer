@@ -42,7 +42,7 @@ public:
 
   virtual bool Compare(const Item *argOtherItem) const = 0;
   uint_fast16_t GetLevel() const noexcept { return level; }
-  const std::string &GetName() const noexcept { return name; }
+  virtual std::string GetName() const { return name; }
   Type GetType() const noexcept { return type; }
   virtual std::string GetStringRep() const = 0;
   bool IsSameType(const Item &argOtherItem) const noexcept {

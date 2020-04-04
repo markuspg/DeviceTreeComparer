@@ -38,6 +38,8 @@ public:
 
   bool Compare(const Item *argOtherItem) const override;
   std::string GetDevicePath() const;
+  std::string GetName() const override;
+  const std::string &GetUnitAddress() const noexcept { return unitAddress; }
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
   void Merge(const Item *argOtherItem, bool argAddFromOther,

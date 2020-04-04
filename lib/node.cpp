@@ -115,10 +115,15 @@ std::string Node::GetDevicePath() const {
   }
   // Direct children of the root node append their name to it
   if (level == 1) {
-    return reinterpret_cast<const Node *>(parent)->GetDevicePath() + name;
+    return reinterpret_cast<const Node *>(parent)->GetDevicePath() + GetName();
   }
   // Indirect children need to explicitly add a slash
-  return reinterpret_cast<const Node *>(parent)->GetDevicePath() + "/" + name;
+  return reinterpret_cast<const Node *>(parent)->GetDevicePath() + "/" +
+         GetName();
+}
+
+std::string Node::GetName() const {
+  return name + (unitAddress.empty() ? "" : "@" + unitAddress);
 }
 
 std::string Node::GetStringRep() const {
