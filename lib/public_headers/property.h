@@ -30,7 +30,7 @@ class Property : public Item {
 public:
   static std::shared_ptr<Property> Construct(const std::string &argLine,
                                              const Node *argParentNode);
-  virtual ~Property();
+  ~Property() override;
 
   bool Compare(const Item *argOtherItem) const override = 0;
   void Merge(const Item *argOtherItem, bool argAddFromOther,
