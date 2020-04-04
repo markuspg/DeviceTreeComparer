@@ -104,6 +104,19 @@ bool Node::Compare(const Item *argOtherItem) const {
   return true;
 }
 
+std::string Node::GetDevicePath() const {
+  // The root node only returns its name
+  if (name == "/") {
+    return "/";
+  }
+  // Direct children of the root node append their name to it
+  if (level == 1) {
+    return reinterpret_cast<const Node *>(parent)->GetDevicePath() + name;
+  }
+  // Indirect children need to explicitly add a slash
+  return reinterpret_cast<const Node *>(parent)->GetDevicePath() + "/" + name;
+}
+
 std::string Node::GetStringRep() const {
   std::string resultStr;
   resultStr.append(GetPrependedTabs() + name + " {\n");

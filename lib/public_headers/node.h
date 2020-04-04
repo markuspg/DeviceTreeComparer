@@ -37,6 +37,7 @@ public:
   Node &operator=(const Node &argNode);
 
   bool Compare(const Item *argOtherItem) const override;
+  std::string GetDevicePath() const;
   static bool IsNodeEndLine(const std::string &argLine);
   static bool IsNodeStartLine(const std::string &argLine);
   void Merge(const Item *argOtherItem, bool argAddFromOther,
