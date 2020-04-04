@@ -46,6 +46,9 @@ protected:
   std::string GetStringRep() const override;
 
 private:
+  static const std::string &VerifyNodeName(bool argIsRootNode,
+                                           const std::string &argNodeName);
+
   std::vector<SharedPtrItem> items;
   const std::string unitAddress;
 };

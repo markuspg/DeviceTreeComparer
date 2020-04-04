@@ -26,14 +26,27 @@
 #include "string_utils.h"
 
 #include <algorithm>
+#include <exception>
 #include <iostream>
+
+class InvalidNodeNameException : public std::exception {
+  const char *what() const noexcept override;
+};
+
+const char *InvalidNodeNameException::what() const noexcept {
+  return "Encountered invalid node name on device tree parsing";
+}
+
+constexpr auto VALID_NODE_NAME_CHARS =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,._+-";
 
 Node::Node(const std::string &argLine, std::istringstream &argInStream,
            const Node *argParentNode)
     : Item{argParentNode
                ? static_cast<uint_fast16_t>(argParentNode->GetLevel() + 1)
                : static_cast<uint_fast16_t>(0u),
-           ExtractNodeName(argLine).nodeName,
+           VerifyNodeName(argParentNode == nullptr,
+                          ExtractNodeName(argLine).nodeName),
            argParentNode ? Type::NODE : Type::ROOT_NODE},
       unitAddress{ExtractNodeName(argLine).unitAddress} {
   std::string line;
@@ -167,4 +180,27 @@ void Node::Merge(const Item *argOtherItem, const bool argAddFromOther,
       }
     }
   }
+}
+
+const std::string &Node::VerifyNodeName(bool argIsRootNode,
+                                        const std::string &argNodeName) {
+  if ((argIsRootNode == true) && (argNodeName == "/")) {
+    return argNodeName;
+  }
+  std::cout << argNodeName << std::endl;
+  if ((argNodeName.size() < 1) || (argNodeName.size() > 31)) {
+    throw InvalidNodeNameException{};
+  }
+
+  if (((argNodeName[0] < 0x41) && (argNodeName[0] > 0x5a)) &&
+      ((argNodeName[0] < 0x61) && (argNodeName[0] > 0x7a))) {
+    throw InvalidNodeNameException{};
+  }
+
+  if (argNodeName.find_first_not_of(VALID_NODE_NAME_CHARS) !=
+      std::string::npos) {
+    throw InvalidNodeNameException{};
+  }
+
+  return argNodeName;
 }
