@@ -53,8 +53,9 @@ public:
   void Print() const;
 
 protected:
-  Item(uint_fast16_t argLevel, const std::string &argName, Type argType)
-      : level{argLevel}, name{argName}, type{argType} {}
+  Item(uint_fast16_t argLevel, const std::string &argName,
+       const Item *argParent, Type argType)
+      : level{argLevel}, name{argName}, parent{argParent}, type{argType} {}
   Item(const Item &argItem) = default;
   Item &operator=(const Item &argItem) = default;
 
@@ -62,6 +63,7 @@ protected:
 
   const uint_fast16_t level = 0;
   const std::string name;
+  const Item *const parent = nullptr;
   const Type type;
 };
 

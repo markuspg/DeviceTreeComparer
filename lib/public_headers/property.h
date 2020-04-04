@@ -38,7 +38,8 @@ public:
 
 protected:
   Property(const std::string &argName, const Node *argParentNode)
-      : Item{argParentNode->GetLevel() + 1, argName, Type::PROPERTY} {}
+      : Item{argParentNode->GetLevel() + 1, argName, argParentNode,
+             Type::PROPERTY} {}
   Property(const Property &argItem) = default;
   Property &operator=(const Property &argItem) = default;
 

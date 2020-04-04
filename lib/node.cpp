@@ -47,7 +47,7 @@ Node::Node(const std::string &argLine, std::istringstream &argInStream,
                : static_cast<uint_fast16_t>(0u),
            VerifyNodeName(argParentNode == nullptr,
                           ExtractNodeName(argLine).nodeName),
-           argParentNode ? Type::NODE : Type::ROOT_NODE},
+           argParentNode, argParentNode ? Type::NODE : Type::ROOT_NODE},
       unitAddress{ExtractNodeName(argLine).unitAddress} {
   std::string line;
   while (std::getline(argInStream, line)) {
