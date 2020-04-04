@@ -45,7 +45,7 @@ protected:
   std::string GetStringRep() const override;
 };
 
-class PropertyValueLess : public Property {
+class PropertyEmpty : public Property {
 public:
   bool Compare(const Item *argOtherItem) const override;
   void Merge(const Item *argOtherItem, bool argAddFromOther,
@@ -55,7 +55,7 @@ protected:
   std::string GetStringRep() const override;
 
 private:
-  PropertyValueLess(const std::string &argName, const Node *argParentNode)
+  PropertyEmpty(const std::string &argName, const Node *argParentNode)
       : Property(argName, argParentNode) {}
 
   friend Property;

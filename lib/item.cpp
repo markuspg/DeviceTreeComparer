@@ -91,9 +91,9 @@ CopySharedPtrItem(const Item::SharedPtrConstItem &argSharedPtrConstItem) {
     return std::make_shared<Node>(*reinterpret_cast<const Node *>(itemPtr));
   }
 
-  if (dynamic_cast<const PropertyValueLess *>(itemPtr)) {
-    return std::make_shared<PropertyValueLess>(
-        *reinterpret_cast<const PropertyValueLess *>(itemPtr));
+  if (dynamic_cast<const PropertyEmpty *>(itemPtr)) {
+    return std::make_shared<PropertyEmpty>(
+        *reinterpret_cast<const PropertyEmpty *>(itemPtr));
   }
 
   if (dynamic_cast<const PropertyValueString *>(itemPtr)) {

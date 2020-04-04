@@ -48,7 +48,7 @@ std::shared_ptr<Property> Property::Construct(const std::string &argLine,
   const auto dividerPos = propertyText.find(" = ");
   if (dividerPos == std::string::npos) {
     return std::shared_ptr<Property>(
-        new PropertyValueLess{propertyText, argParentNode});
+        new PropertyEmpty{propertyText, argParentNode});
   }
 
   return std::shared_ptr<Property>(new PropertyValueString{
@@ -67,13 +67,12 @@ void Property::Merge(const Item *argOtherItem, bool argAddFromOther,
   Item::Merge(argOtherItem, argAddFromOther, argPurgeItemsNotInOther);
 }
 
-bool PropertyValueLess::Compare(const Item *argOtherItem) const {
+bool PropertyEmpty::Compare(const Item *argOtherItem) const {
   if (false == Property::Compare(argOtherItem)) {
     return false;
   }
 
-  const auto otherProperty =
-      dynamic_cast<const PropertyValueLess *>(argOtherItem);
+  const auto otherProperty = dynamic_cast<const PropertyEmpty *>(argOtherItem);
   if (nullptr != otherProperty) {
     return true;
   }
@@ -81,13 +80,13 @@ bool PropertyValueLess::Compare(const Item *argOtherItem) const {
   return false;
 }
 
-std::string PropertyValueLess::GetStringRep() const {
+std::string PropertyEmpty::GetStringRep() const {
   return Property::GetStringRep() + ";";
 }
 
-void PropertyValueLess::Merge(const Item *argOtherItem, bool argAddFromOther,
-                              bool argPurgeItemsNotInOther) {
-  if (dynamic_cast<const PropertyValueLess *>(argOtherItem) == nullptr) {
+void PropertyEmpty::Merge(const Item *argOtherItem, bool argAddFromOther,
+                          bool argPurgeItemsNotInOther) {
+  if (dynamic_cast<const PropertyEmpty *>(argOtherItem) == nullptr) {
     throw std::invalid_argument{
         "Try to merge unrelated class into PropertyValueLess"};
   }
