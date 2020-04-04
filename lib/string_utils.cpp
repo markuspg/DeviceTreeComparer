@@ -28,13 +28,15 @@
 constexpr char SPACE_CHAR = 0x20;
 constexpr char TAB_CHAR = 0x09;
 
-std::string ExtractNodeName(const std::string &argInputStr) {
+NodeName ExtractNodeName(const std::string &argInputStr) {
   if (argInputStr.find('{') == std::string::npos) {
     throw std::invalid_argument{"Node line does not contain '{'"};
   }
   const auto withoutLeadingWhitespaceStr{RemoveLeadingWhitespace(argInputStr)};
   const auto nextSpaceIdx = withoutLeadingWhitespaceStr.find(0x20);
-  return withoutLeadingWhitespaceStr.substr(0, nextSpaceIdx);
+  const auto nodeName{withoutLeadingWhitespaceStr.substr(0, nextSpaceIdx)};
+  const auto atPos = nodeName.find('@');
+  return NodeName{nodeName.substr(0, atPos), nodeName.substr(atPos + 1)};
 }
 
 std::string RemoveLeadingWhitespace(const std::string &argInputStr) {

@@ -26,7 +26,12 @@
 
 #include <string>
 
-std::string ExtractNodeName(const std::string &argInputStr);
+struct NodeName {
+  const std::string nodeName;
+  const std::string unitAddress;
+};
+
+NodeName ExtractNodeName(const std::string &argInputStr);
 std::string RemoveLeadingWhitespace(const std::string &argInputStr);
 std::string RemoveTrailingSemicolon(const std::string &argInputStr);
 

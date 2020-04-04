@@ -47,6 +47,7 @@ protected:
 
 private:
   std::vector<SharedPtrItem> items;
+  const std::string unitAddress;
 };
 
 #endif // NODE_H
