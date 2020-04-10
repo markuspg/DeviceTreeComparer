@@ -37,6 +37,8 @@ const char *InvalidNodeNameException::what() const noexcept {
   return "Encountered invalid node name on device tree parsing";
 }
 
+constexpr std::string::size_type MAXIMUM_NODE_NAME_LENGTH = 31;
+constexpr std::string::size_type MINIMUM_NODE_NAME_LENGTH = 1;
 constexpr auto VALID_NODE_NAME_CHARS =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,._+-";
 
@@ -206,18 +208,45 @@ void Node::Merge(const Item *argOtherItem, const bool argAddFromOther,
 
 const std::string &Node::VerifyNodeName(bool argIsRootNode,
                                         const std::string &argNodeName) {
-  if ((argIsRootNode == true) && (argNodeName == "/")) {
-    return argNodeName;
-  }
-  if ((argNodeName.size() < 1) || (argNodeName.size() > 31)) {
+  // The root node's name must always be '/'
+  if (argIsRootNode == true) {
+    if (argNodeName == "/") {
+      return argNodeName;
+    }
     throw InvalidNodeNameException{};
   }
 
+  // A node name can contain one @ character splitting in name and unit address
+  const auto at_sign_qty =
+      std::count(std::begin(argNodeName), std::end(argNodeName), '@');
+  // More than one @ character makes the node name invalid
+  if (at_sign_qty > 1) {
+    throw InvalidNodeNameException{};
+  }
+
+  // If there is an @ character in the node name ...
+  if (at_sign_qty == 1) {
+    // ... split the node name at the @ character ...
+    const auto at_sign_pos = argNodeName.find('@');
+    // ... and verify the actual node name ...
+    VerifyNodeName(false, argNodeName.substr(0, at_sign_pos));
+    // ... and the unit address separately.
+    VerifyNodeName(false, argNodeName.substr(at_sign_pos + 1));
+  }
+
+  // Node name shall start with lowercase or uppercase character
   if (((argNodeName[0] < 0x41) && (argNodeName[0] > 0x5a)) &&
       ((argNodeName[0] < 0x61) && (argNodeName[0] > 0x7a))) {
     throw InvalidNodeNameException{};
   }
 
+  // Node name shall be between 1 and 31 characters long
+  if ((argNodeName.size() < MINIMUM_NODE_NAME_LENGTH) ||
+      (argNodeName.size() > MAXIMUM_NODE_NAME_LENGTH)) {
+    throw InvalidNodeNameException{};
+  }
+
+  // Node name shall consist only of a certain set of characters
   if (argNodeName.find_first_not_of(VALID_NODE_NAME_CHARS) !=
       std::string::npos) {
     throw InvalidNodeNameException{};
