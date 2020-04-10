@@ -36,6 +36,8 @@ const char *InvalidPropertyNameException::what() const noexcept {
 }
 
 static const std::regex propertyNameRegex{"^\\t+([0-9a-zA-Z,._+?#-]+)( = |;)"};
+constexpr std::string::size_type MAXIMUM_PROPERTY_NAME_LENGTH = 31;
+constexpr std::string::size_type MINIMUM_PROPERTY_NAME_LENGTH = 1;
 constexpr auto VALID_PROPERTY_NAME_CHARS =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,._+?#-";
 
@@ -90,10 +92,13 @@ void Property::Merge(const Item *argOtherItem, bool argAddFromOther,
 
 const std::string &
 Property::VerifyPropertyName(const std::string &argPropName) {
-  if ((argPropName.size() < 1) || (argPropName.size() > 31)) {
+  // Property name shall be between 1 and 31 characters long
+  if ((argPropName.size() < MINIMUM_PROPERTY_NAME_LENGTH) ||
+      (argPropName.size() > MAXIMUM_PROPERTY_NAME_LENGTH)) {
     throw InvalidPropertyNameException{};
   }
 
+  // Property name shall consist only of a certain set of characters
   if (argPropName.find_first_not_of(VALID_PROPERTY_NAME_CHARS) !=
       std::string::npos) {
     throw InvalidPropertyNameException{};
